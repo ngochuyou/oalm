@@ -1,4 +1,4 @@
 {
 	"mongoURI" : "mongodb+srv://username:password@cluster0-jsx3w.mongodb.net/graphO?retryWrites=true&ssl=true",
-	"jwtSecret" : "WcWIP8haJ7jaCZvw"
+	"jwtSecret" : "yourSecret"
 }
