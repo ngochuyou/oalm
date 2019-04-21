@@ -81,7 +81,7 @@ class Account extends React.Component {
 
 			if (res !== null) {
 				if (res.status === 200) {
-					console.log(res.json);
+					props.history.push('/login');
 				}
 			}
 		}
@@ -116,7 +116,7 @@ class Account extends React.Component {
 
 				if (res !== null) {
 					if (res.status === 200) {
-						console.log(res.json);
+						props.history.push('/login');
 					}
 				}
 			}
@@ -206,7 +206,8 @@ class Account extends React.Component {
 const mapStateToProps = (store) => {
 	return {
 		principal: store.auth.principal,
-		form: store.user.form
+		form: store.user.form,
+		history: store._root.history
 	}
 }
 
