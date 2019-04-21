@@ -5,6 +5,10 @@ import WeightTable from '../components/WeightTable.jsx';
 import DijkstraPanel from '../components/DijkstraPanel.jsx';
 
 class Graph extends React.Component {
+	componentWillMount() {
+		document.title = 'Graph';
+	}
+
 	render() {
 		return (
 			<div>

@@ -14,6 +14,7 @@ class Login extends React.Component {
 	}
 
 	async componentWillMount() {
+		document.title = 'Login';
 		const props = this.props;
 		props.dispatch(init(initState));
 

@@ -11,6 +11,10 @@ class UserPage extends React.Component {
 		}
 	}
 
+	componentWillMount() {
+		document.title = 'User page';
+	}
+
 	switchTab(index) {
 		if (this.state.selectedTab === index) {
 			return ;

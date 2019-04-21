@@ -1,7 +1,7 @@
 {
-  "name": "graphO",
+  "name": "oalm",
   "version": "1.0.0",
-  "description": "Graph with MERN",
+  "description": "Algorithms in web UI with MERN",
   "main": "server.js",
   "scripts": {
     "client-install": "npm install --prefix client",
