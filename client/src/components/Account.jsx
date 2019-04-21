@@ -1,10 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import ErrorMessage from './ErrorMessage.jsx';
-import { updateForm } from '../actions/UserAction.jsx';
+import { updateForm, updateUser } from '../actions/UserAction.jsx';
 import { fromString } from '../structures/DateTimeFormatter.js';
+import { validate } from '../actions/AuthAction.jsx';
 
 class Account extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			password: false,
+			confirm: false,
+			confirmValue: ''
+		}
+	}
+
 	onChange(e) {
 		const props = this.props;
 
@@ -14,10 +24,151 @@ class Account extends React.Component {
 		}));
 	}
 
+	togglePassword() {
+		var password = this.state.password;
+		const props = this.props;
+
+		if (!password) {
+			props.dispatch(updateForm({
+				...props.form,
+				password: '',
+				nPassword: '',
+				rePassword: ''
+			}));
+		} else {
+			props.dispatch(updateForm({
+				...props.form,
+				password: undefined,
+				nPassword: undefined,
+				rePassword: undefined
+			}));
+		}
+
+		this.setState({
+			password: !password,
+			confirm: false
+		});
+	}
+
+	async update() {
+		const props = this.props;
+		const form = props.form;
+
+		if (!this.state.password) {
+			this.setState({
+				confirm: true
+			});
+
+			return ;
+		}
+
+		const result = validate({
+			...form,
+			username: props.principal.user.username
+		});
+
+		props.dispatch(updateForm(result.form));
+
+		if (result.ok) {
+			const res = await props.dispatch(updateUser({
+				...props.principal,
+				user: {
+					...props.principal.user,
+					name: form.name,
+					password: form.nPassword
+				}
+			}, form.password));
+
+			if (res !== null) {
+				if (res.status === 200) {
+					console.log(res.json);
+				}
+			}
+		}
+	}
+
+	onConfirmChange(e) {
+		this.setState({
+			confirmValue: e.target.value
+		});
+	}
+
+	async onConfirm(e) {
+		if (e.keyCode === 13) {
+			const props = this.props;
+			const user = props.principal.user;
+			const result = validate({
+				...props.form,
+				username: user.username,
+				password: this.state.confirmValue
+			});
+			
+			if (result.ok) {
+				const form = result.form;
+				const res = await props.dispatch(updateUser({
+					...props.principal,
+					user: {
+						...user,
+						name: form.name,
+						password: form.password
+					}
+				}, form.password));
+
+				if (res !== null) {
+					if (res.status === 200) {
+						console.log(res.json);
+					}
+				}
+			}
+		}
+	}
+
 	render() {
 		const props = this.props;
 		const form = props.form;
 		const user = props.principal.user;
+		const state = this.state;
+
+		const password = ( state.password ?	
+			(
+				<div>
+					<div className='form-control'>
+						<input required='required' type='password'
+						name='password' id='info-password' value={ form.password }
+						onChange={ this.onChange.bind(this) }/>
+						<label forhtml='info-password'>Old Password</label>
+						<ErrorMessage message={ form.msgs.password } />
+					</div>
+					<div className='form-control'>
+						<input required='required' type='password'
+						name='nPassword' id='info-nPassword' value={ form.nPassword }
+						onChange={ this.onChange.bind(this) }/>
+						<label forhtml='info-nPassword'>New Password</label>
+						<ErrorMessage message={ form.msgs.nPassword } />
+					</div>
+					<div className='form-control'>
+						<input required='required' type='password'
+						name='rePassword' id='info-rePassword' value={ form.rePassword }
+						onChange={ this.onChange.bind(this) }/>
+						<label forhtml='info-rePassword'>Reenter New Password</label>
+						<ErrorMessage message={ form.msgs.rePassword } />
+					</div>
+				</div>
+			) : null
+		)
+
+		const confirm = ( state.confirm ? 
+			(
+				<div className='form-control'>
+					<input required='required' type='password'
+					name='password' id='info-password'
+					value={ state.confirmValue }
+					onChange={ this.onConfirmChange.bind(this) }
+					onKeyDown={ this.onConfirm.bind(this) }/>
+					<label forhtml='info-password'>Password</label>
+				</div>
+			) : null
+		)
 
 		return (
 			<div>
@@ -36,7 +187,16 @@ class Account extends React.Component {
 						<label forhtml='#info-name'>Name</label>
 						<ErrorMessage message={ form.msgs.name } />
 					</div>
+					<div className='uk-margin-top'>
+						<a href='#p' onClick={ this.togglePassword.bind(this) }
+						><i>Change password</i></a>
+						{ confirm }
+						{ password }
+					</div>
 					<p className='uk-text-meta'>Joined on { fromString(user.joinDate) }</p>
+					<button className='uk-button uk-button-primary'
+					onClick={ this.update.bind(this) }>
+					Update</button>
 				</div>
 			</div>
 		)

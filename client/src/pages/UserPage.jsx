@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Account from '../components/Account.jsx';
-import { Link } from 'react-router-dom';
 
 class UserPage extends React.Component {
 	constructor(props) {
@@ -54,14 +53,16 @@ class UserPage extends React.Component {
 					<div className='uk-margin-medium-left'>
 						<ul uk-nav='' uk-switcher='' className='pointer'>
 							<li onClick={ this.switchTab.bind(this, 0) }>
-								<i className={ 'fas fa-info uk-margin-right ' + state.tabs[0] }></i>
+								<div>
+									<i className={ 'fas fa-info uk-margin-right ' + state.tabs[0] }></i>
+								</div>
 								<span className='item-name'>Account</span>
 							</li>
+							<li onClick={ () => this.props.history.push('/') }>
+								<div><i className='fab fa-connectdevelop uk-margin-right'></i></div>
+								<span className='item-name'>My Graphs</span>
+							</li>
 						</ul>
-					</div>
-					<div className='uk-margin-top'>
-						<i className='fab fa-connectdevelop uk-margin-right'></i>
-						<Link to='/'>My Graphs</Link>
 					</div>
 				</div>
 				<div className='uk-width-3-4 uk-padding'>

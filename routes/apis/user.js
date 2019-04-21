@@ -82,4 +82,66 @@ router.post('/', (req, res) => {
 	}
 });
 
+// @route PUT api/users
+// @desc UPDATE a user
+// @access Public
+
+router.put('/', auth, (req, res) => {
+	const id = req.user.id;
+	const password = req.body.password;
+
+	if (!password || !id) {
+		return res.status(400).json({ msg: 'Bad request.' });
+	}
+
+	User.findById(id)
+		.then(user => {
+			if (!user) {
+				return res.status(404).json({ msg: 'User not found.' });
+			}
+
+			bcrypt.compare(password, user.password)
+				.then(
+					isMatch => {
+						if (!isMatch) {
+							return res.status(400).json({ msg: 'invalid credentials.' });
+						}
+
+						const validation = validate(req.body.user);
+						
+						if (!(validation instanceof User)) {
+							return res.status(400).json({ msg: 'Bad request.' });
+						}
+
+						validation._id = id;
+
+						bcrypt.genSalt(10, (err, salt) => {
+							bcrypt.hash(validation.password, salt, (err, hash) => {
+								if (err) throw err;
+
+								if (hash !== user.password) {
+									validation.remotes = [];
+								}
+
+								validation.password = hash;
+
+								const query = { _id: id };
+								const options = { upsert: true, new: true, setDefaultsOnInsert: true };
+
+								User.findOneAndUpdate(query, validation, options)
+									.then(user => {
+										return res.status(200).json({
+											name: user.name,
+											id: user.id,
+											username: user.username,
+											joinDate: user.joinDate
+										});
+									});	
+							});
+						});
+					}
+				)
+		});
+});
+
 module.exports = router;

@@ -65,7 +65,7 @@ router.post('/', (req, res) => {
 				if (!password) {
 					return res.status(400).json({ msg: 'Please enter your credentials.' });
 				}
-
+				
 				bcrypt.compare(password, user.password)
 					.then(
 						isMatch => {

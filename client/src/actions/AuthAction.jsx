@@ -103,11 +103,12 @@ export function authorize(form, history) {
 				form: validation.form
 			}
 		});
-
+		
 		if (validation.ok) {
 			const authz = await auth(form.username, form.password);
 
 			if (authz === undefined) {
+
 				return ;
 			}
 
@@ -165,7 +166,7 @@ export function authorize(form, history) {
 			});
 				
 			document.cookie = 'GRAPH_USERNAME=' + authz.res.user.username + '; expires=' + appendTime(new Date(), 1).toUTCString();
-
+			
 			history.push('/');
 		}
 	}
@@ -202,10 +203,10 @@ export function autoAuth() {
 	}
 }
 
-function validate(form) {
+export function validate(form) {
 	if (!form) return { ok: false, form: form };
-
-	if (form.username === null || form.name === null || form.password === null) {
+		
+	if (form.username === undefined || form.password === undefined) {
 		return {
 			ok: false,
 			form: form
@@ -214,14 +215,14 @@ function validate(form) {
 
 	const msgs = form.msgs;
 	var flag = true;
-
+	
 	if (form.username.length < 8 || form.username.length > 32) {
 		msgs.username = '*Username must have the length between 8 and 32.';
 		flag = false;
 	} else {
 		msgs.username = '';
 	}
-
+	
 	if (form.name !== undefined) {
 		if (form.name.length < 1 || form.name.length > 32) {
 			msgs.name = '*Name must have the length between 1 and 32.';
@@ -230,12 +231,56 @@ function validate(form) {
 			msgs.name = '';
 		}
 	}
-
+	
 	if (form.password.length < 8  || form.password.length > 50) {
 		msgs.password = '*Password must have the length between 8 and 50.';
 		flag = false;
 	} else {
 		msgs.password = '';
+	}
+	
+	if (form.nPassword !== undefined && form.rePassword !== undefined) {
+		var ok = true;
+		const rePassword = form.rePassword;
+		
+		if (rePassword.length < 8  || rePassword.length > 50) {
+			msgs.rePassword = '*Password must have the length between 8 and 50.';
+			flag = false;
+			ok = false;
+		} else {
+			msgs.rePassword = '';
+		}
+
+		const nPassword = form.nPassword;
+
+		if (nPassword.length < 8  || nPassword.length > 50) {
+			msgs.nPassword = '*Password must have the length between 8 and 50.';
+			flag = false;
+			ok = false;
+		} else {
+			msgs.nPassword = '';
+		}
+
+		if (ok) {
+			const password = form.password;
+
+			if (rePassword !== nPassword) {
+				msgs.nPassword = '*New password and reentered password must match.';
+				msgs.rePassword = '*New password and reentered password must match.';
+				flag = false;
+			} else {
+				if (rePassword === password && nPassword === password) {
+					msgs.nPassword = '*New password must not match old password.';
+					msgs.rePassword = '*New password must not match old password.';
+					msgs.password = '*New password must not match old password.';
+					flag = false;
+				} else {
+					msgs.nPassword = '';
+					msgs.rePassword = '';
+					msgs.password = '';
+				}
+			}
+		}
 	}
 
 	return {
@@ -244,7 +289,7 @@ function validate(form) {
 	}
 }
 
-async function auth(username, password) {
+export async function auth(username, password) {
 	return await fetch(backendURI + '/api/auth', {
 		method: 'POST',
 		mode: 'cors',
