@@ -23,4 +23,5 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-default.json
+# The default file contains sensitive data so we don't want to make this public
+*/default.json
