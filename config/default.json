@@ -2,6 +2,4 @@
 	// "mongoURI" : "mongodb://localhost:27017",
 	"mongoURI" : "mongodb+srv://ngochuyou:ngocchyy@cluster0-jsx3w.mongodb.net/graphO?retryWrites=true&ssl=true",
 	"jwtSecret" : "yoursecret",
-	"IPv4" : "27.74.253.101",
-	"localIP" : "192.168.1.237"
 }
