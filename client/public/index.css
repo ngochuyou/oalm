@@ -1,0 +1,477 @@
+body {
+	margin: 0;
+	padding: 0;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+	  "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+	  sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+code {
+	font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+	  monospace;
+}
+
+.container {
+	min-height: 100vh;
+}
+
+.node {
+	position: absolute;
+	width: 50px;
+	height: 50px;
+	background-color: #ce7b5b;
+	border-radius: 50%;
+	overflow: hidden;
+	color: white;
+	line-height: 50px;
+	text-align: center;
+	transition: all .08s;
+	transform: translate(-25px, -25px);
+	z-index: 10;
+	font-weight: 800;
+	cursor: pointer;
+}
+
+.node.selected {
+	background-color: darkgray;
+}
+
+.gggreen {
+	color: #f1f3f4;
+}
+
+.flow-auto {
+	overflow: auto;
+}
+
+.pointer {
+	cursor: pointer;
+}
+
+.box-shadow {
+	box-shadow: 0 2px 10px rgba(0,0,0,.2);
+}
+
+.form-control {
+	margin-top: 20px;
+	position: relative;
+}
+
+.form-control > input, select, textarea {
+	padding: 5px 10px;
+	width: 100%;
+	height: 50px;
+	font-size: 20px;
+	border: 1px solid lightgrey;
+	border-radius: 5px;
+	box-sizing: border-box;
+}
+
+.form-control > textarea {
+	padding: 13px 10px;
+	height: 250px;
+	overflow: auto;
+	resize: none;
+}
+
+.form-control > textarea:invalid + label {
+	top: 12px;
+	left: 12px;
+	font-size: 18px;
+}
+
+.form-control > textarea:valid + label {
+	top: -13.5px;
+	left: 10px;
+	color: #1e87f0;
+	font-size: 16px;
+}
+
+/*
+	works only with inputs that have required='required'
+	since the attribute will consider those input as :valid when
+	they contain value and :invalid when they don't contain value
+*/
+
+.form-control > label {
+	position: absolute;
+	transition: all .2s;
+	background-color: white;
+	padding: 0 5px;
+}
+
+.form-control > input:invalid + label {
+	top: 12px;
+	left: 12px;
+	font-size: 18px;
+}
+
+.form-control > input:valid + label {
+	top: -13.5px;
+	left: 10px;
+	color: #1e87f0;
+	font-size: 16px;
+}
+
+.panel-container {
+	max-width: 100vw;
+	max-height: 100vh;
+	overflow: auto;
+	box-sizing: border-box;
+	padding: 5px;
+}
+
+.panel {
+	width: 200vw;
+	height: 200vh;
+	background-color: #ececec;
+	box-shadow: 0 2px 10px rgba(0,0,0,.2);
+	box-sizing: border-box;
+	margin-top: 20px;
+	position: relative;
+	overflow: auto;
+}
+
+.panel > svg {
+	width: 100%;
+	height: 100%;
+}
+
+.panel > svg > line {
+	stroke: black;
+	stroke-width: 2;
+}
+
+.panel > svg > text {
+	fill: red;
+	font: bold 20px sans-serif;
+}
+
+.action-panel {
+	width: 100%;
+	padding: 10px;
+	box-sizing: border-box;
+	background-color: white;
+	box-shadow: 0 2px 10px rgba(0,0,0,.2);
+	position: relative;
+}
+
+.action-panel > div > div, .action-panel .action  {
+	display: inline-block;
+}
+
+.action-panel .action-button {
+	padding: 7px 7px;
+	cursor: pointer;
+	font-weight: 500;
+	display: inline-block;
+}
+
+.action-panel .uk-dropdown > div {
+	display: block;
+}
+
+.action-panel .action-icon {
+	padding: 7px 0;
+	min-width: 50px;
+	margin: 0 5px;
+	display: inline-block;
+	transition: background-color .3s;
+	cursor: pointer;
+	text-align: center;
+	position: relative;
+}
+
+.action-panel .action-icon-cross::after {
+	content: "";
+    transform: rotate(145deg);
+    background-color: #ff4a4a;
+    position: absolute;
+    top: 48%;
+    left: 15%;
+    bottom: 48%;
+    right: 15%;
+}
+
+.action-panel .action-icon:hover, .action-button:hover {
+	background-color: #ececec;
+}
+
+.action-panel .action-message {
+	position: absolute;
+	text-align: center;
+	width: 100%;
+	top: 99%;
+	left: 0;
+}
+
+.action-panel .action-message > span {
+	padding: 5px 7px;
+	background-color: white;
+	box-sizing: border-box;
+	color: #1e87f0;
+	transition: all .1s;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	font-weight: 500;
+}
+
+.action-panel .action-message > span:empty {
+	padding: 0;
+}
+
+.hidden {
+	display: none;
+}
+
+.custom-table {
+	max-width: calc(95vw);
+	max-height: calc(100vh);
+	box-sizing: border-box;
+}
+
+.custom-table th, .custom-table td, .custom-table-a td {
+	font-weight: bolder;
+	font-size: 20px;
+	min-width: 50px;
+	min-height: 50px;
+	padding: 7px;
+	box-sizing: border-box;
+	text-align: center;
+	border-collapse: collapse;
+}
+
+.custom-table-a td {
+	padding: 16px 12px;
+}
+
+.custom-table-a tr {
+	cursor: pointer;
+}
+
+.custom-table th, .custom-table td:first-child, .custom-table-a td:first-child, .custom-table-a td:last-child {
+	color: #1e87f0!important;
+}
+
+.custom-table-a td:last-child {
+	text-align: left;
+	white-space: pre-wrap;
+}
+
+.custom-table th {
+	border-bottom: 1px solid #1e87f0;
+}
+
+.custom-table td:first-child {
+	border-right: 1px solid #1e87f0;
+}
+
+.custom-table th:first-child {
+	border-right: 1px solid #1e87f0;
+	border-bottom: 1px solid #1e87f0;
+	font-size: small;
+	color: #999!important;
+}
+
+.custom-table tr:hover {
+	background-color: #95cac738;
+}
+
+.Infinity {
+	position: relative;
+}
+
+.Infinity > span {
+	display: none;
+}
+
+.Infinity:before {
+	content: '8';
+	font-family: monospace;
+	color: rebeccapurple;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%) rotate(90deg);
+	display: table;
+	width: -moz-max-content;
+	max-width: 100%;
+	box-sizing: border-box;
+	position: absolute;
+}
+
+table th {
+	text-align: center !important;
+}
+
+.dijkstra-simulator {
+	width: calc(50vw);
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	background-color: white;
+	box-shadow: 0 2px 10px rgba(0,0,0,.2);
+	padding: 10px 15px 20px 15px;
+	z-index: 130;
+	transition: all .3s;
+	overflow-y: auto;
+	opacity: 1;
+	animation-name: fadeInOpacity;
+	animation-iteration-count: 1;
+	animation-timing-function: ease-in;
+	animation-duration: .1s;
+}
+
+.dijkstra-simulator::-webkit-scrollbar {
+	display: none;
+}
+
+.fadeOut {
+	animation-name: fadeOutOpacity;
+	animation-iteration-count: 1;
+	animation-timing-function: ease-out;
+	animation-duration: .2s;
+}
+
+@keyframes fadeInOpacity {
+	0% {
+		opacity: 0;
+	}
+	
+	100% {
+		opacity: 1;
+	}
+}
+
+@keyframes fadeOutOpacity {
+	0% {
+		opacity: 1;
+	}
+
+	100% {
+		opacity: 0;
+	}
+}
+
+.dijkstra-simulator > .path-track {
+	width: 100%;
+	height: 60%;
+	max-height: 60%;
+	box-sizing: border-box;
+	overflow-y: auto;
+}
+
+.dijkstra-simulator > .path-track tbody tr:not([class='-1']) {
+	background-color: #e6e6e6;
+}
+
+.dijkstra-simulator > .visit-track {
+	width: 100%;
+}
+
+.dijkstra-simulator > .visit-track > div {
+	display: inline-block;
+	width: 50%;
+	box-sizing: border-box;
+	padding: 0 5px;
+	font-size: 17px;
+	font-weight: bolder;
+}
+
+.dijkstra-simulator > .visit-track > div:last-child {
+	border-left: 1px solid #e5e5e5;
+}
+
+.dijkstra-simulator > .console {
+	border-top: 2px solid #e5e5e5;
+	width: 100%;
+	word-break: break-word;
+	white-space: pre-wrap;
+	font-size: 20px;
+	font-family: cursive;
+}
+
+.dijkstra-simulator > .control > div {
+	display: inline-block;
+}
+
+.neighbors {
+	background-color: lightblue!important;
+}
+
+.selected-line {
+	stroke: #42dbfb !important;
+	stroke-width: 4 !important;
+}
+
+.height-screen {
+	min-height: 100vh;
+}
+
+.spin {
+	-webkit-animation:spin 4s linear infinite;
+	-moz-animation:spin 4s linear infinite;
+	animation:spin 4s linear infinite;
+}
+
+@-moz-keyframes spin {
+	100% {
+		-moz-transform: rotate(360deg);
+	} 
+}
+
+@-webkit-keyframes spin {
+	100% {
+		-webkit-transform: rotate(360deg);
+	}
+}
+
+@keyframes spin {
+	100% {
+		-webkit-transform: rotate(360deg); transform:rotate(360deg);
+	}
+}
+
+.transition {
+	transition: all .3s;
+}
+
+.logo-large {
+	top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    display: table;
+    width: -moz-max-content;
+    max-width: 100%;
+    box-sizing: border-box;
+    position: absolute;
+    font-size: 250px;
+}
+
+.full-grid > div {
+	min-height: 100vh;
+}
+
+.sidebar {
+	background-color: #1e87f0;
+	box-shadow: 0 2px 10px rgba(0,0,0,.2);
+}
+
+.sidebar * {
+	color: white;
+}
+
+.sidebar li > i:not(.ls) {
+	opacity: 0;
+	transition: opacity .2s;
+}
+
+.sidebar li:hover > i {
+	opacity: 1;
+}
+
+.sidebar li > .item-name {
+	font-weight: 450;
+}
