@@ -13,6 +13,10 @@ code {
 	  monospace;
 }
 
+html {
+	scroll-behavior: smooth;
+}
+
 .container {
 	min-height: 100vh;
 }

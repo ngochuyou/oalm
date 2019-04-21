@@ -111,7 +111,7 @@ class Panel extends React.Component {
 
 		return (
 			<div className='panel' tabIndex='1'
-			onKeyDown={ this.onKeyDown.bind(this) }>
+			id='panel' onKeyDown={ this.onKeyDown.bind(this) }>
 				{
 					list.map((v, index) => {
 						return (

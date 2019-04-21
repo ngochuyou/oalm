@@ -12,6 +12,10 @@ class DijkstraPanel extends React.Component {
 		}
 	}
 
+	componentDidMount() {
+		this.panel = document.getElementById('panel');
+	}
+
 	close() {
 		const props = this.props;
 		const simulator = props.simulator;
@@ -270,6 +274,10 @@ class DijkstraPanel extends React.Component {
 	}
 
 	highlight(index) {
+		const rect = this.panel.getBoundingClientRect();
+
+		window.scrollTo(rect.top + window.scrollY, rect.left + window.scrollX);
+
 		const props = this.props;
 		const selectedPrevious = props.previous[index];
 		var newSelectedList = [];

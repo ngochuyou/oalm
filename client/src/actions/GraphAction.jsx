@@ -52,14 +52,7 @@ export function load(graph) {
 	return function(dispatch) {
 		const vertices = graph.vertices;
 		var tree = new BinaryTree();
-
-		dispatch({
-			type: 'VT-update-list',
-			payload: vertices
-		});
-		
 		const edges = graph.edges;
-
 		var weights = [], prev = [];
 		var verticesData = vertices.map((v) => {
 			prev.push([]);
@@ -105,6 +98,11 @@ export function load(graph) {
 		});
 
 		dispatch({
+			type: 'VT-update-list',
+			payload: vertices
+		});
+		
+		dispatch({
 			type: 'DS-update-prev',
 			payload: prev
 		});
@@ -115,7 +113,7 @@ export function load(graph) {
 				id: graph._id,
 				name: graph.name
 			}
-		})
+		});
 	}
 }
 
@@ -155,7 +153,8 @@ export function save(principal, vertices, edges, graphInfo) {
 		dispatch({
 			type: 'G-update-info',
 			payload: graphInfo
-		})
+		});
+		console.log('hello end save');
 	}
 }
 

@@ -24,9 +24,8 @@ class SaveLoadControl extends React.Component {
 
 	save() {
 		const props = this.props;
-		const graphInfo = props.graphInfo;
 
-		props.dispatch(save({ ...props.principal }, [ ...props.vertices ], [ ...props.edges ], { ...graphInfo }));
+		props.dispatch(save({ ...props.principal }, [ ...props.vertices ], [ ...props.edges ], { ...props.graphInfo }));
 	}
 
 	onGraphNameChange(e) {
@@ -65,6 +64,19 @@ class SaveLoadControl extends React.Component {
 		}
 	}
 
+	async new() {
+		const props = this.props;
+
+		await props.dispatch(save({ ...props.principal }, [ ...props.vertices ], [ ...props.edges ], { ...props.graphInfo }));
+
+		props.dispatch(load({
+			vertices: [],
+			edges: [],
+			_id: null,
+			name: 'untitled'
+		}));
+	}
+
 	render() {
 		const props = this.props;
 		const graphs = props.graphs;
@@ -86,6 +98,11 @@ class SaveLoadControl extends React.Component {
 				href='#graph-load-control' uk-toggle=''
 				onClick={ this.loadGraphs.bind(this) }
 				><i className='fas fa-folder-open'>
+				</i></div>
+				<div className='action-icon'
+				uk-tooltip='title: New graph; pos: bottom'
+				onClick={ this.new.bind(this) }
+				><i className='far fa-file'>
 				</i></div>
 				<div id='graph-load-control' className='uk-flex-top' uk-modal=''>
 					<div className='uk-modal-dialog uk-modal-body uk-margin-auto-vertical uk-width-xxlarge'
