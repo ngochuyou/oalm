@@ -125,6 +125,7 @@ html {
 	overflow: auto;
 	box-sizing: border-box;
 	padding: 5px;
+	resize: both;
 }
 
 .panel {

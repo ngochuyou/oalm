@@ -312,3 +312,28 @@ export async function auth(username, password) {
 		err => console.log(err)
 	)
 }
+
+export async function logout(principal) {
+	if (!principal) {
+		return null;
+	}
+
+	return await fetch(backendURI + '/api/auth', {
+		method: 'DELETE',
+		mode: 'cors',
+		headers: {
+			'Content-Type' : 'application/json',
+			'Accept' : 'application/json',
+			'x-auth-token' : principal.token
+		}
+	})
+	.then(
+		async res => {
+			return {
+				status: res.status,
+				res: await res.json()
+			}
+		},
+		err => console.log(err)
+	)
+}

@@ -98,4 +98,49 @@ router.post('/', (req, res) => {
 		)
 });
 
+// @route DELETE api/auth
+// @desc Eject an authorization
+// @access Public
+
+router.delete('/', auth, (req, res) => {
+	const id = req.user.id;
+
+	if (!id) {
+		return res.status(400).json({ msg: 'Bad request.' });
+	}
+
+	User.findById(id)
+		.then(
+			user => {
+				if (!user) {
+					return res.status(404).json({ msg: 'User not found.' });
+				}
+
+				var ip = req.ip;
+
+				if (!ip) {
+					return res.status(400).json({ msg: 'Bad request.' });
+				} else {
+					ip = ip.split(':').pop();
+
+					if (!ip) {
+						return res.status(400).json({ msg: 'Bad request.' });
+					}
+				}
+
+				const index = user.remotes.indexOf(ip);
+
+				if (index === -1) {
+					return res.status(400).json({ msg: 'Bad request.' });
+				}
+
+				user.remotes.splice(index, 1);
+				user.save()
+					.then(() => {
+						return res.status(200).json({ msg: 'Ejected.' });
+					});
+			}
+		);
+});
+
 module.exports = router;

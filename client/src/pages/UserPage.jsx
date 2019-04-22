@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Account from '../components/Account.jsx';
+import { logout } from '../actions/AuthAction.jsx';
 
 class UserPage extends React.Component {
 	constructor(props) {
@@ -28,6 +29,18 @@ class UserPage extends React.Component {
 			selectedTab: index,
 			tabs: tabs
 		});
+	}
+
+	async logout() {
+		const res = await logout(this.props.principal);
+
+		if (res !== null) {
+			if (res.status === 200) {
+				this.props.history.push('/login');
+
+				return;
+			}
+		}
 	}
 
 	render() {
@@ -58,13 +71,17 @@ class UserPage extends React.Component {
 						<ul uk-nav='' uk-switcher='' className='pointer'>
 							<li onClick={ this.switchTab.bind(this, 0) }>
 								<div>
-									<i className={ 'fas fa-info uk-margin-right ' + state.tabs[0] }></i>
+									<i className={ 'fas fa-info ' + state.tabs[0] }></i>
 								</div>
 								<span className='item-name'>Account</span>
 							</li>
 							<li onClick={ () => this.props.history.push('/') }>
-								<div><i className='fab fa-connectdevelop uk-margin-right'></i></div>
+								<div><i className='fab fa-connectdevelop'></i></div>
 								<span className='item-name'>My Graphs</span>
+							</li>
+							<li onClick={ this.logout.bind(this) }>
+								<div><i className='fas fa-sign-out-alt'></i></div>
+								<span className='item-name'>Log out</span>
 							</li>
 						</ul>
 					</div>
