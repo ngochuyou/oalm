@@ -178,6 +178,10 @@ export function autoAuth() {
 		
 		if (username !== null) {
 			const authz = await auth(username, null);
+
+			if (!authz) {
+				return ;
+			}
 			
 			if (authz.status === 200) {
 				dispatch({

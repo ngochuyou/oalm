@@ -6,6 +6,7 @@ import { Route, withRouter } from 'react-router-dom' ;
 import { connect } from 'react-redux';
 import { init } from './actions/RootAction.jsx';
 import { autoAuth } from './actions/AuthAction.jsx';
+import Canvas from './components/Canvas.jsx';
 
 class App extends Component {
 	async componentWillMount() {
@@ -15,6 +16,7 @@ class App extends Component {
 		
 		const result = await props.dispatch(autoAuth());
 
+		if (!result) return ;
 		if (result.status !== 200) {
 			props.history.push('/login');
 		}
@@ -29,6 +31,8 @@ class App extends Component {
 				render={ (props) => <RegistrationPage { ...props }/>}/>
 				<Route path='/me' exact
 				render={ (props) => <UserPage { ...props }/>}/>
+				<Route path='/canvas' exact
+				render={ (props) => <Canvas { ...props }/>}/>
 			</div>
 		);
 	}
