@@ -5,8 +5,18 @@ import {
 } from '../actions/GraphAction.jsx';
 import { connect } from 'react-redux';
 import { fromLongTime } from '../structures/DateTimeFormatter.js';
+import GraphCanvas from './GraphCanvas.jsx';
+import { uploadBlob } from '../actions/FileUploadAction.jsx';
 
 class SaveLoadControl extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			canvasOn: false,
+			canvasData: null
+		}
+	}
+
 	componentDidMount() {
 		this.graphLoadCloseBtn = document.getElementById('graph-load-control-close');
 		this.graphDeleteCloseBtn = document.getElementById('graph-delete-control-close');
@@ -22,10 +32,37 @@ class SaveLoadControl extends React.Component {
 		props.dispatch(loadGraphs(props.principal));
 	}
 
-	save() {
+	renderCanvas() {
+		this.setState({
+			canvasOn: true
+		});
+	}
+
+	async save(blob) {
 		const props = this.props;
 
-		props.dispatch(save({ ...props.principal }, [ ...props.vertices ], [ ...props.edges ], { ...props.graphInfo }));
+		this.setState({
+			canvasOn: false
+		});
+
+		const res = await uploadBlob(props.principal, blob);
+
+		var filename = await res.text()
+			.then(
+				async text => {
+					console.log(text);
+					return text;
+				}
+			);
+
+		if (!filename  || typeof filename !== 'string') {
+			filename = '';
+		}
+
+		props.dispatch(save({ ...props.principal }, [ ...props.vertices ], [ ...props.edges ], {
+			...props.graphInfo,
+			img: filename
+		}));
 	}
 
 	onGraphNameChange(e) {
@@ -90,7 +127,7 @@ class SaveLoadControl extends React.Component {
 				</div>
 				<div className='action-icon'
 				uk-tooltip='title: Save graph; pos: bottom'
-				onClick={ this.save.bind(this) }
+				onClick={ this.renderCanvas.bind(this) }
 				><i className='fas fa-save'>
 				</i></div>
 				<div className='action-icon'
@@ -117,11 +154,13 @@ class SaveLoadControl extends React.Component {
 								return (
 									<div className='uk-card uk-card-default uk-child-width-1-3@s uk-margin uk-grid-collapse uk-padding'
 									key={ index } uk-grid=''>
-										<div>
-											<span className='uk-text-primary uk-text-bold'>{ g.name }</span>
+										<div className='uk-text-center'>
+											<img data-src={ g.img } uk-img='' alt=''
+											className='img-fit'/>
 										</div>
 										<div>
-											<span className='uk-text-meta'>{ fromLongTime(g.createdDate) }</span>
+											<p className='uk-text-primary uk-text-bold'>{ g.name }</p>
+											<p className='uk-text-meta'>{ fromLongTime(g.createdDate) }</p>
 										</div>
 										<div className='uk-text-right'>
 											<div className='uk-button uk-button-text uk-margin-right'
@@ -157,6 +196,12 @@ class SaveLoadControl extends React.Component {
 						</div>
 					</div>
 				</div>
+				{
+					this.state.canvasOn ?
+					(<GraphCanvas vertices={ this.props.vertices } edges={ this.props.edges }
+					onLoaded={ this.save.bind(this) }
+					class='hidden'/>) : null
+				}
 			</div>
 		)
 	}

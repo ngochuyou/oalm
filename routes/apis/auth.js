@@ -1,11 +1,10 @@
-const express = require('express');
-const router = express.Router();
+const router = require('express').Router();
 const bcrypt = require('bcryptjs');
 const config = require('config');
 const jwt = require('jsonwebtoken');
 const auth = require('../../middleware/auth.js');
+
 const User = require('../../models/User.js');
-const isIp = require('net').isIP;
 
 // @route GET api/auth/user
 // @desc GET a user

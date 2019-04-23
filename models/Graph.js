@@ -28,6 +28,10 @@ const GraphSchema = new Schema({
 		type: Schema.Types.ObjectId,
 		require: true,
 		sparse: true,
+	},
+	img: {
+		type: String,
+		default: ''
 	}
 });
 

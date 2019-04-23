@@ -17,6 +17,12 @@ html {
 	scroll-behavior: smooth;
 }
 
+.img-fit {
+	max-height: 243px;
+	max-width: 180px;
+	object-fit: cover;
+}
+
 .container {
 	min-height: 100vh;
 }

@@ -2,7 +2,8 @@ const initState = {
 	graphInfo: {
 		id: null,
 		name: 'untitled',
-		msg: ''
+		msg: '',
+		img: ''
 	},
 	graphs: [],
 	form: {
