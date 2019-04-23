@@ -22,7 +22,7 @@ export function updateForm(form) {
 
 export function loadGraphs(principal) {
 	return async function(dispatch) {
-		const res = await fetch(backendURI + '/api/graphs', {
+		const res = await fetch(backendURI + '/api/graphs/gets', {
 			method: 'GET',
 			mode: 'cors',
 			headers: {
@@ -38,32 +38,51 @@ export function loadGraphs(principal) {
 					json: await res.json()
 				}
 			}
-		)
+		);
 
-		if (res !== undefined && res.status === 200 && Array.isArray(res.json)) {
-			var data, fileRes;
+		console.log(res);
+		// const res = await fetch(backendURI + '/api/graphs', {
+		// 	method: 'GET',
+		// 	mode: 'cors',
+		// 	headers: {
+		// 		'Content-Type' : 'application/json',
+		// 		'Accept' : 'application/json',
+		// 		'x-auth-token' : principal.token
+		// 	}
+		// })
+		// .then(
+		// 	async res => {
+		// 		return {
+		// 			status: res.status,
+		// 			json: await res.json()
+		// 		}
+		// 	}
+		// )
 
-			for (var g of res.json) {
-				data = 'data:image/jpeg;base64, ';
-				fileRes = await getFile(principal, g.img);
+		// if (res !== undefined && res.status === 200 && Array.isArray(res.json)) {
+		// 	var data, fileRes;
 
-				if (fileRes.status === 200) {
-					data +=	await fileRes.text()
-						.then(
-							async text => {
-								return text;
-							}
-						);
-				}
+		// 	for (var g of res.json) {
+		// 		data = 'data:image/jpeg;base64, ';
+		// 		fileRes = await getFile(principal, g.img);
 
-				g.img = data;	
-			}
+		// 		if (fileRes.status === 200) {
+		// 			data +=	await fileRes.text()
+		// 				.then(
+		// 					async text => {
+		// 						return text;
+		// 					}
+		// 				);
+		// 		}
 
-			dispatch({
-				type: 'G-update-list',
-				payload: res.json
-			})
-		}
+		// 		g.img = data;	
+		// 	}
+
+		// 	dispatch({
+		// 		type: 'G-update-list',
+		// 		payload: res.json
+		// 	})
+		// }
 	}
 }
 
