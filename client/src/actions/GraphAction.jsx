@@ -1,6 +1,6 @@
 import { backendURI } from '../keys.js';
 import BinaryTree from '../structures/BinaryTree.jsx';
-import { getFile } from './FileUploadAction.jsx';
+import { uploadBlob, getFile } from './FileUploadAction.jsx';
 
 export function updateGraphInfo(graphInfo) {
 	return function(dispatch) {
@@ -130,51 +130,58 @@ export function load(graph) {
 			type: 'G-update-info',
 			payload: {
 				id: graph._id,
-				name: graph.name
+				name: graph.name,
+				img: ''
 			}
 		});
 	}
 }
 
-export function save(principal, vertices, edges, graphInfo) {
-	return async function(dispatch) {
-		if (!principal || !graphInfo) {
-			return ;
-		}
-
-		const res = await fetch(backendURI + '/api/graphs', {
-			method: 'POST',
-			mode: 'cors',
-			headers: {
-				'Content-Type' : 'application/json',
-				'Accept' : 'application/json',
-				'x-auth-token' : principal.token
-			},
-			body: JSON.stringify({
-				vertices: vertices,
-				edges: translateEdgesObjToModel(edges, vertices),
-				name: graphInfo.name,
-				id: graphInfo.id,
-				img: graphInfo.img
-			})
-		})
-		.then(
-			async res => {
-				return {
-					json: await res.json(),
-					status: res.status
-				}
-			},
-			err => console.log(err)
-		)
-
-		graphInfo.msg = res.json.msg;
-
-		dispatch({
-			type: 'G-update-info',
-			payload: graphInfo
-		});
+export async function save(principal, vertices, edges, graphInfo) {
+	if (!principal || !graphInfo || !vertices || !edges) {
+		return ;
 	}
+
+	var res, img = graphInfo.img;
+
+	if (img.constructor.name === 'Blob') {
+		res = await uploadBlob(principal, img);
+
+		if (res) {
+			if (res.status === 200) {
+				graphInfo.img = await res.text()
+					.then(text => {
+						return text;
+					})
+			}
+		}
+	}
+
+	return await fetch(backendURI + '/api/graphs', {
+		method: 'POST',
+		mode: 'cors',
+		headers: {
+			'Content-Type' : 'application/json',
+			'Accept' : 'application/json',
+			'x-auth-token' : principal.token
+		},
+		body: JSON.stringify({
+			vertices: vertices,
+			edges: translateEdgesObjToModel(edges, vertices),
+			name: graphInfo.name,
+			id: graphInfo.id,
+			img: graphInfo.img
+		})
+	})
+	.then(
+		async res => {
+			return {
+				json: await res.json(),
+				status: res.status
+			}
+		},
+		err => console.log(err)
+	)
 }
 
 export function deleteGraph(principal, graphInfo, id, callback) {

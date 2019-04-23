@@ -59,26 +59,17 @@ router.post('/', auth, async (req, res) => {
 			if (translation === null) {
 				return res.status(400).json({ msg: 'Invalid graph datas.' })
 			}
+			
+			var graph = new Graph({
+				vertices: translation.vertices,
+				edges: translation.edges,
+				uId: user.id,
+				name: req.body.name,
+				img: req.body.img
+			});
 
-			var graph;
-
-			if (oGraph === null) {
-				graph = new Graph({
-					vertices: translation.vertices,
-					edges: translation.edges,
-					uId: user.id,
-					name: req.body.name,
-					img: req.body.img
-				});
-			} else {
-				graph = new Graph({
-					vertices: translation.vertices,
-					edges: translation.edges,
-					uId: user.id,
-					_id: oGraph.id,
-					name: req.body.name,
-					img: req.body.img
-				});
+			if (oGraph !== null) {
+				graph._id = oGraph.id;
 			}
 
 			if (!auditor.auditArrays(graph)) {
@@ -127,7 +118,7 @@ router.delete('/', auth, (req, res) => {
 
 			Graph.findByIdAndRemove(graph.id, (err, graph) => {
 
-				return res.status(200).json({ msg: 'Removed graph ' + graph.name });
+				return res.status(200).json({ msg: 'Removed ' + graph.name });
 			});
 		})
 });
