@@ -17,9 +17,13 @@ router.get('/', auth, (req, res) => {
 				return res.status(400).json({ msg: 'Invalid user.' })
 			}
 
+			console.log(user.username);
+			console.log(user._id);
+			
 			Graph.find({ uId: req.user.id })
 				.select('-uId')
 				.then(list => {
+					console.log(list.length);
 					return res.status(200).json(list)
 				});
 		})
