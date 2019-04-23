@@ -6,22 +6,6 @@ const Graph = require('../../models/Graph.js');
 const User = require('../../models/User.js');
 const auditor = require('../../models/auditors/graph-auditor.js');
 
-
-router.get('/gets', auth, (req, res) => {
-	return res.status(200).json(
-		[
-			{
-				name: 'abc',
-				price: '2000'
-			},
-			{
-				name: 'xyz',
-				price: '3000'
-			}
-		]
-	)
-});
-
 // @route GET api/graphs
 // @desc GET all graphs of specific user
 // @access Private
@@ -32,14 +16,10 @@ router.get('/', auth, (req, res) => {
 			if (!user) {
 				return res.status(400).json({ msg: 'Invalid user.' })
 			}
-
-			console.log(user.username);
-			console.log(user._id);
 			
 			Graph.find({ uId: req.user.id })
 				.select('-uId')
 				.then(list => {
-					console.log(list.length);
 					return res.status(200).json(list)
 				});
 		})
