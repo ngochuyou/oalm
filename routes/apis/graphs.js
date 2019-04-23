@@ -8,7 +8,7 @@ const auditor = require('../../models/auditors/graph-auditor.js');
 
 
 router.get('/gets', auth, (req, res) => {
-	return res.status(200).json({
+	return res.status(200).json(
 		[
 			{
 				name: 'abc',
@@ -19,7 +19,7 @@ router.get('/gets', auth, (req, res) => {
 				price: '3000'
 			}
 		]
-	})
+	)
 });
 
 // @route GET api/graphs
