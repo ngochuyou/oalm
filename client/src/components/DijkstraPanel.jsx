@@ -76,7 +76,7 @@ class DijkstraPanel extends React.Component {
 				simulator.msg = "Let's start by initializing the shortest path table with all the distances to all the vertices.\n" + 
 				"\tThe distance from the vertex " + vertices[start] + " to itself is 0, every other vertices is Infinity.\n" +
 				"\tUnvisited vertices and Visited vertices array so we can track down which vertex is visited and which hasn't.\n" +
-				"\tThe 'Previous' column will let us know the path that leads from " + vertices[start] + " to every other vertices.\n" +
+				"\tThe 'Previous' column will let us know the path that leads from vertex " + vertices[start] + " to every other vertices.\n" +
 				"\tNext step: Find the minimum value in the distances array and start the algorithm from that vertex.\n";
 				props.dispatch(updateSimulator(simulator));
 
@@ -170,7 +170,7 @@ class DijkstraPanel extends React.Component {
 					return "\n Current cost of " + vertices[n.i] + " is " + n.s + " and the cost calculated is " + oldShortestPath[start] + " + " + tmp[n.i]  + " = " + n.c + ".";
 				}) : "\tThere are no neighbors.\n" );
 
-				simulator.msg += "\n\tThis is called the 'RELAXATION' process, we will also write the vertex " + vertices[start] + " into the Previous table if the RELAXATION process was done to these neighbor vertices.\n" + 
+				simulator.msg += "\n\tThis is called the 'RELAXATION' process, we will also write the vertex " + vertices[start] + " into the Previous table if the RELAXATION process was done to it's neighbors.\n" + 
 				"\tBefore finshing this step, we will push the current vertex into the Visited array so we can be aware that we have already visited this vertex and won't be visiting it anymore.\n" +
 				"\tAt the end of this step, we will get the result like above.\n" + 
 				"\tThis process will be continued until the next minimum value of the shortest path table can not be found (only Infinity values left or the Unvisited array in empty).\n";
@@ -205,7 +205,7 @@ class DijkstraPanel extends React.Component {
 				if (pos === null) {
 					simulator.start = null;
 					simulator.stepType = 'initial';
-					simulator.msg = 'As you can see in the shortest path table, there are no minimum values left, so this will be the final step of the Algorithm.\n' +
+					simulator.msg = 'As you can see in the shortest path table, the next minimum value can not be found, so this will be the final step of the Algorithm.\n' +
 					'\tIf your graph contains any vertices that are not connected to any other vertices, you will see that despite there are still some unvisited vertices, ' +
 					'the algorithm can not be applied on these vertices because it can not find it\'s next minimum value in the shortest path table due to their disconnections.\n';
 				} else {

@@ -18,7 +18,7 @@ class ActionPanel extends React.Component {
 			principalControl = (
 				<div>
 					<p className='uk-margin-remove'><Link to='/me'>
-					{ principal.user.username }
+					{ principal.user.name }
 					</Link></p>
 					<p className='uk-margin-remove uk-text-primary'>{ props.msg }</p>
 				</div>

@@ -81,7 +81,7 @@ class Panel extends React.Component {
 	}
 
 	onKeyDown(e) {
-		if (e.keyCode === 27 && !this.props.simulator.on) {
+		if (e.keyCode === 27 && !this.props.simulator.interval) {
 			const props = this.props;
 			var vertices = [ ...props.list];
 

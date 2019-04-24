@@ -123,16 +123,18 @@ class SaveLoadControl extends React.Component {
 		}
 	}
 
-	save() {
-		// draw graph on canvas
-		this.drawCanvas();
-		// capture graph image, returned value is in blob type
-		this.canvas.toBlob(async (blob) => {
-			const props = this.props;
+	async save() {
+		// ***not uploading images of graph due to cloud storage difficulties
+		// // draw graph on canvas
+		// this.drawCanvas();
+		// // capture graph image, returned value is in blob type
+		// this.canvas.toBlob(async (blob) => {
+
 			// save
+			const props = this.props;
 			const res = await save(props.principal, [ ...props.vertices ], [ ...props.edges ], {
 				...props.graphInfo,
-				img: blob
+				img: '' // ***will be blob when cloud storage is available
 			});
 
 			if (res) {
@@ -144,18 +146,20 @@ class SaveLoadControl extends React.Component {
 					}));
 				}
 			}
-		}, 'image/jpeg', 0.5);
+
+		// }, 'image/jpeg', 0.5);
 	}
 
-	new() {
-		// cannot reuse this.save() since toBlob() returns void
-		this.drawCanvas();
-		this.canvas.toBlob(async (blob) => {
-			const props = this.props;
+	async new() {
+		// // cannot reuse this.save() since toBlob() returns void
+		// this.drawCanvas();
+		// this.canvas.toBlob(async (blob) => {
+
 			// save
+			const props = this.props;
 			const res = await save(props.principal, [ ...props.vertices ], [ ...props.edges ], {
 				...props.graphInfo,
-				img: blob
+				img: '' // ***will be blob when cloud storage is available
 			});
 
 			if (res) {
@@ -171,7 +175,8 @@ class SaveLoadControl extends React.Component {
 					}));
 				}
 			}
-		}, 'image/jpeg', 0.5);
+
+		// }, 'image/jpeg', 0.5);
 	}
 
 	render() {
@@ -214,12 +219,10 @@ class SaveLoadControl extends React.Component {
 								return (
 									<div className='uk-card uk-card-default uk-child-width-1-3@s uk-margin uk-grid-collapse uk-padding'
 									key={ index } uk-grid=''>
-										<div className='uk-text-center'>
-											<img src={ g.img } uk-img='' alt=''
-											className='img-fit'/>
+										<div>
+											<p className='uk-text-primary uk-text-bold'>{ g.name }</p>	
 										</div>
 										<div>
-											<p className='uk-text-primary uk-text-bold'>{ g.name }</p>
 											<p className='uk-text-meta'>{ fromLongTime(g.createdDate) }</p>
 										</div>
 										<div className='uk-text-right'>

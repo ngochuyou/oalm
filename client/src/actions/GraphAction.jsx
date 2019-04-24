@@ -1,6 +1,6 @@
 import { backendURI } from '../keys.js';
 import BinaryTree from '../structures/BinaryTree.jsx';
-import { uploadBlob, getFile } from './FileUploadAction.jsx';
+// import { uploadBlob, getFile } from './FileUploadAction.jsx';
 
 export function updateGraphInfo(graphInfo) {
 	return function(dispatch) {
@@ -41,23 +41,24 @@ export function loadGraphs(principal) {
 		)
 
 		if (res !== undefined && res.status === 200 && Array.isArray(res.json)) {
-			var data, fileRes;
+			// ***when cloud storage is available, retrieve graph image in base64
+			// var data, fileRes;
+			
+			// for (var g of res.json) {
+			// 	data = 'data:image/jpeg;base64, ';
+			// 	fileRes = await getFile(principal, g.img);
 
-			for (var g of res.json) {
-				data = 'data:image/jpeg;base64, ';
-				fileRes = await getFile(principal, g.img);
+			// 	if (fileRes.status === 200) {
+			// 		data +=	await fileRes.text()
+			// 			.then(
+			// 				async text => {
+			// 					return text;
+			// 				}
+			// 			);
+			// 	}
 
-				if (fileRes.status === 200) {
-					data +=	await fileRes.text()
-						.then(
-							async text => {
-								return text;
-							}
-						);
-				}
-
-				g.img = data;	
-			}
+			// 	g.img = data;	
+			// }
 
 			dispatch({
 				type: 'G-update-list',
@@ -142,20 +143,21 @@ export async function save(principal, vertices, edges, graphInfo) {
 		return ;
 	}
 
-	var res, img = graphInfo.img;
+	// ***when cloud storage is available, send graph image in blob
+	// var res, img = graphInfo.img;
 
-	if (img.constructor.name === 'Blob') {
-		res = await uploadBlob(principal, img);
+	// if (img.constructor.name === 'Blob') {
+	// 	res = await uploadBlob(principal, img);
 
-		if (res) {
-			if (res.status === 200) {
-				graphInfo.img = await res.text()
-					.then(text => {
-						return text;
-					})
-			}
-		}
-	}
+	// 	if (res) {
+	// 		if (res.status === 200) {
+	// 			graphInfo.img = await res.text()
+	// 				.then(text => {
+	// 					return text;
+	// 				})
+	// 		}
+	// 	}
+	// }
 
 	return await fetch(backendURI + '/api/graphs', {
 		method: 'POST',
