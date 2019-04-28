@@ -20,7 +20,7 @@ class Login extends React.Component {
 
 		const result = await props.dispatch(autoAuth());
 
-		if (result.status === 200) {
+		if (result && result.status === 200) {
 			props.history.push('/');
 		}
 	}

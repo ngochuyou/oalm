@@ -127,7 +127,8 @@ class DijkstraControl extends React.Component {
 	render() {
 		return (
 			<div>
-				<button className='uk-button uk-button-primary'>Dijkstra</button>
+				<button className='uk-button uk-button-primary'
+				>Dijkstra</button>
 				<div uk-dropdown=''>
 					<div className='action-button'
 					uk-tooltip='title: Run Dijkstra; pos: bottom'

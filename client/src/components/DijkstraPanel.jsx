@@ -161,7 +161,7 @@ class DijkstraPanel extends React.Component {
 					vertexList[n.i].selected = 'neighbors';
 
 					for (e of edges) {
-						if ('' + e.i1 + e.i2 === vertices[start] + vertices[n.i] || '' + e.i2 + e.i1 === vertices[start] + vertices[n.i]) {
+						if ('' + e.i1 + e.i2 === '' + vertices[start] + vertices[n.i] || '' + e.i2 + e.i1 === '' + vertices[start] + vertices[n.i]) {
 							e.selected = 'selected-line';
 							break;
 						}
@@ -425,14 +425,14 @@ class DijkstraPanel extends React.Component {
 
 		return (
 			<div className='uk-margin uk-margin-top'>
-				<h2 className='uk-heading-line'><span>Algorithm results</span></h2>
+				<hr className='uk-divider-icon'></hr>
 				<div className='flow-auto'
 				style={{ maxHeight: '500px'}}>
 					<table className='uk-table uk-table-hover uk-table-divider custom-table-a'>
 						<thead>
 							<tr>
 								<th className='uk-table-shrink'>Vertices</th>
-								<th>Shortest Path</th>
+								<th>Shortest Distance</th>
 								<th className='uk-table-expand'>Paths</th>
 							</tr>
 						</thead>

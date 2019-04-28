@@ -7,6 +7,13 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 class ActionPanel extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			hidden: true
+		}
+	}
+
 	render() {
 		var saveLoadControl = null;
 		var principalControl = null;
@@ -14,13 +21,12 @@ class ActionPanel extends React.Component {
 		const props = this.props;
 
 		if ((principal = props.principal) !== null) {
-			saveLoadControl = (<GraphControl />);
+			saveLoadControl = ( <GraphControl /> );
 			principalControl = (
-				<div>
-					<p className='uk-margin-remove'><Link to='/me'>
+				<div>	
+					<p className='uk-margin-remove padding-x'><Link to='/me'>
 					{ principal.user.name }
 					</Link></p>
-					<p className='uk-margin-remove uk-text-primary'>{ props.msg }</p>
 				</div>
 			)
 		} else {
@@ -32,19 +38,16 @@ class ActionPanel extends React.Component {
 
 		return (
 			<div>
-				<div className='action-panel uk-grid-collapse'
+				<div className='action-panel'
 				uk-sticky='animation: uk-animation-slide-top'
-				uk-grid='' style={{ zIndex: 101 }}>
-					<div className='uk-width-4-5'>
+				style={{ zIndex: 101 }}>
+					<div>
+						<div className='uk-position-relative'
+						>{ principalControl }</div>
 						{ saveLoadControl }
 						<VertexForm />
 						<EdgeForm />
 						<DijkstraControl />
-					</div>
-					<div className='uk-width-1-5 uk-text-right'>
-						<div className='uk-margin-right'>
-							{ principalControl }
-						</div>
 					</div>
 				</div>
 			</div>
