@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Account from '../components/Account.jsx';
 import { logout } from '../actions/AuthAction.jsx';
+import { init } from '../actions/RootAction.jsx';
+import { autoAuth } from '../actions/AuthAction.jsx';
 
 class UserPage extends React.Component {
 	constructor(props) {
@@ -12,7 +14,17 @@ class UserPage extends React.Component {
 		}
 	}
 
-	componentWillMount() {
+	async componentWillMount() {
+		const props = this.props;
+		
+		props.dispatch(init(props.history));
+		
+		const result = await props.dispatch(autoAuth());
+
+		if (!result) return ;
+		if (result.status !== 200) {
+			props.history.push('/login');
+		}
 		document.title = 'User page';
 	}
 

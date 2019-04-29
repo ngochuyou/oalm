@@ -3,24 +3,8 @@ import Graph from './pages/Graph.jsx';
 import RegistrationPage from './pages/RegistrationPage.jsx';
 import UserPage from './pages/UserPage.jsx';
 import { Route, withRouter } from 'react-router-dom' ;
-import { connect } from 'react-redux';
-import { init } from './actions/RootAction.jsx';
-import { autoAuth } from './actions/AuthAction.jsx';
 
 class App extends Component {
-	async componentWillMount() {
-		const props = this.props;
-		
-		props.dispatch(init(props.history));
-		
-		const result = await props.dispatch(autoAuth());
-
-		if (!result) return ;
-		if (result.status !== 200) {
-			props.history.push('/login');
-		}
-	}
-
 	render() {
 		return (
 			<div className='container'>
@@ -35,10 +19,4 @@ class App extends Component {
 	}
 }
 
-const mapStateToProps = (store) => {
-	return {
-		principal: store.auth.principal
-	}
-}
-
-export default withRouter(connect(mapStateToProps)(App));
+export default withRouter(App);
