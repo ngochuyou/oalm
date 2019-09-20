@@ -101,19 +101,6 @@ scroll-behavior: smooth;
 	resize: none;
 }
 
-.form-control > textarea:invalid + label {
-	top: 12px;
-	left: 12px;
-	font-size: 18px;
-}
-
-.form-control > textarea:valid + label {
-	top: -13.5px;
-	left: 10px;
-	color: #1e87f0;
-	font-size: 16px;
-}
-
 /*
 	works only with inputs that have required='required'
 	since the attribute will consider those input as :valid when
@@ -134,6 +121,19 @@ scroll-behavior: smooth;
 }
 
 .form-control > input:valid + label {
+	top: -13.5px;
+	left: 10px;
+	color: #1e87f0;
+	font-size: 16px;
+}
+
+.form-control > textarea:invalid + label {
+	top: 12px;
+	left: 12px;
+	font-size: 18px;
+}
+
+.form-control > textarea:valid + label {
 	top: -13.5px;
 	left: 10px;
 	color: #1e87f0;

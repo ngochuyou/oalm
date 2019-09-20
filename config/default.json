@@ -1,4 +1,4 @@
 {
-	"mongoURI" : "mongodb+srv://username:password@cluster0-jsx3w.mongodb.net/graphO?retryWrites=true&ssl=true",
-	"jwtSecret" : "yourSecret"
+	"mongoURI" : "mongodb+srv://ngochuy_ielts:devismylife98@cluster0-zvjgv.mongodb.net/test?retryWrites=true&w=majority",
+	"jwtSecret" : "oiZaU3Fkm331DeJm"
 }
