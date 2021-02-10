@@ -21,7 +21,6 @@ router.get('/user', auth, (req, res) => {
 // @route POST api/auth
 // @desc Authorize a user
 // @access Public
-
 router.post('/', (req, res) => {
 	const username = req.body.username;
 

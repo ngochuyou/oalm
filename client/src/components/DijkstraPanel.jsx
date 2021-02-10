@@ -171,7 +171,7 @@ class DijkstraPanel extends React.Component {
 				}) : "\tThere are no neighbors.\n" );
 
 				simulator.msg += "\n\tThis is called the 'RELAXATION' process, we will also write the vertex " + vertices[start] + " into the Previous table if the RELAXATION process was done to it's neighbors.\n" + 
-				"\tBefore finshing this step, we will push the current vertex into the Visited array so we can be aware that we have already visited this vertex and won't be visiting it anymore.\n" +
+				"\tBefore finshing this step, we will push the current vertex into the Visited array so we can be awared that we have already visited this vertex and won't be visiting it anymore.\n" +
 				"\tAt the end of this step, we will get the result like above.\n" + 
 				"\tThis process will be continued until the next minimum value of the shortest path table can not be found (only Infinity values left or the Unvisited array in empty).\n";
 				simulator.stepType = 'outer-loop-after';
